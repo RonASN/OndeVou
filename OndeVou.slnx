@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="OndeVou.Api/OndeVou.Api.csproj" />
+  <Project Path="OndeVou.Application/OndeVou.Application.csproj" />
+  <Project Path="OndeVou.Domain/OndeVou.Domain.csproj" />
+  <Project Path="OndeVou.Infrastructure/OndeVou.Infrastructure.csproj" />
 </Solution>
