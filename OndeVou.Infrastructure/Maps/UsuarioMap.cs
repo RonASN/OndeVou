@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OndeVou.Domain.Entities;
+using OndeVou.Domain.Enums;
 
 namespace OndeVou.Infrastructure.Maps;
 
@@ -25,7 +26,17 @@ public class UsuarioMap : IEntityTypeConfiguration<Usuario>
         entity.Property(e => e.SenhaHash)
             .IsRequired();
 
+        entity.Property(e => e.TipoUsuario)
+            .IsRequired()
+            .HasConversion<int>();
+
         entity.Property(e => e.DataCriacao)
             .IsRequired();
+
+        // Relacionamento: Um usuário pode ter vários estabelecimentos
+        entity.HasMany(u => u.Estabelecimentos)
+            .WithOne(e => e.Usuario)
+            .HasForeignKey(e => e.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

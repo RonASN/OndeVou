@@ -9,4 +9,8 @@ public class Estabelecimento
     public string Descricao { get; set; } = string.Empty;
     public string Categoria { get; set; } = string.Empty;
     public Point Localizacao { get; set; } = null!;
+
+    // Relacionamento com Usuario (dono)
+    public int UsuarioId { get; set; }
+    public Usuario Usuario { get; set; } = null!;
 }

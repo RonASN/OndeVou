@@ -1,12 +1,15 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OndeVou.Api.Helpers;
 using OndeVou.Application.DTOs.Request;
+using OndeVou.Application.Exceptions;
 using OndeVou.Application.Interfaces;
 
 namespace OndeVou.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class EstabelecimentoController : ControllerBase
 {
     private readonly IEstabelecimentoService _estabelecimentoService;
@@ -21,12 +24,24 @@ public class EstabelecimentoController : ControllerBase
     {
         try
         {
-            var resultado = await _estabelecimentoService.CriarAsync(request);
-            return Ok(resultado);
+            // Obter ID do usuário autenticado
+            var usuarioId = ClaimsHelper.GetUsuarioId(User);
+
+            if (!usuarioId.HasValue)
+            {
+                return Unauthorized(new { mensagem = "Usuário não autenticado" });
+            }
+
+            var resultado = await _estabelecimentoService.CriarAsync(request, usuarioId.Value);
+            return CreatedAtAction(nameof(Criar), new { id = resultado.Id }, resultado);
+        }
+        catch (BusinessException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { mensagem = ex.Message });
+            return StatusCode(500, new { mensagem = "Erro interno do servidor", detalhes = ex.Message });
         }
     }
 }

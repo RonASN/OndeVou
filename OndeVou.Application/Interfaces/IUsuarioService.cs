@@ -6,4 +6,5 @@ namespace OndeVou.Application.Interfaces;
 public interface IUsuarioService
 {
     Task<UsuarioResponseDto> CriarAsync(CriarUsuarioRequestDto request);
+    Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
 }

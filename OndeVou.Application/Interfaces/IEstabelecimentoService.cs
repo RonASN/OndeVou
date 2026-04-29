@@ -5,5 +5,5 @@ namespace OndeVou.Application.Interfaces;
 
 public interface IEstabelecimentoService
 {
-    Task<EstabelecimentoResponseDto> CriarAsync(CriarEstabelecimentoRequestDto request);
+    Task<EstabelecimentoResponseDto> CriarAsync(CriarEstabelecimentoRequestDto request, int usuarioId);
 }
