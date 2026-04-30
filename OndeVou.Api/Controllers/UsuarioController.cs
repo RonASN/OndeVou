@@ -53,4 +53,38 @@ public class UsuarioController : ControllerBase
             return BadRequest(new { mensagem = ex.Message });
         }
     }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> Listar([FromQuery] PaginacaoRequestDto paginacao)
+    {
+        try
+        {
+            var resultado = await _usuarioService.ListarAsync(paginacao);
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
+
+    [HttpGet("{id}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ObterPorId(int id)
+    {
+        try
+        {
+            var resultado = await _usuarioService.ObterPorIdAsync(id);
+
+            if (resultado == null)
+                return NotFound(new { mensagem = "Usuário não encontrado" });
+
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
 }

@@ -84,4 +84,37 @@ public class UsuarioService : IUsuarioService
             ExpiresAt = DateTime.UtcNow.AddHours(expireHours)
         };
     }
+
+    public async Task<List<UsuarioResponseDto>> ListarAsync(PaginacaoRequestDto paginacao)
+    {
+        var usuarios = await _usuarioRepository.ListarAsync(paginacao.Skip, paginacao.Take);
+
+        return usuarios.Select(u => new UsuarioResponseDto
+        {
+            Id = u.Id,
+            Nome = u.Nome,
+            Email = u.Email,
+            TipoUsuario = (int)u.TipoUsuario,
+            TipoUsuarioDescricao = u.TipoUsuario.ToString(),
+            DataCriacao = u.DataCriacao
+        }).ToList();
+    }
+
+    public async Task<UsuarioResponseDto?> ObterPorIdAsync(int id)
+    {
+        var usuario = await _usuarioRepository.BuscarPorIdAsync(id);
+
+        if (usuario == null)
+            return null;
+
+        return new UsuarioResponseDto
+        {
+            Id = usuario.Id,
+            Nome = usuario.Nome,
+            Email = usuario.Email,
+            TipoUsuario = (int)usuario.TipoUsuario,
+            TipoUsuarioDescricao = usuario.TipoUsuario.ToString(),
+            DataCriacao = usuario.DataCriacao
+        };
+    }
 }

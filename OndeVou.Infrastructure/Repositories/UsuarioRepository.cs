@@ -32,4 +32,14 @@ public class UsuarioRepository : IUsuarioRepository
         return await _context.Usuarios
             .FirstOrDefaultAsync(u => u.Id == id);
     }
+
+    public async Task<List<Usuario>> ListarAsync(int skip, int take)
+    {
+        return await _context.Usuarios
+            .AsNoTracking()
+            .OrderBy(u => u.Nome)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+    }
 }

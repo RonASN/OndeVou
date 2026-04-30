@@ -60,4 +60,69 @@ public class EstabelecimentoService : IEstabelecimentoService
             Longitude = resultado.Localizacao.X
         };
     }
+
+    public async Task<List<EstabelecimentoResponseDto>> ListarAsync(EstabelecimentoFiltroRequestDto filtro)
+    {
+        var estabelecimentos = await _estabelecimentoRepository.ListarAsync(
+            filtro.Nome,
+            filtro.Categoria,
+            filtro.Skip,
+            filtro.Take);
+
+        return estabelecimentos.Select(e => new EstabelecimentoResponseDto
+        {
+            Id = e.Id,
+            Nome = e.Nome,
+            Descricao = e.Descricao,
+            Categoria = e.Categoria,
+            Latitude = e.Localizacao.Y,
+            Longitude = e.Localizacao.X
+        }).ToList();
+    }
+
+    public async Task<EstabelecimentoResponseDto?> ObterPorIdAsync(int id)
+    {
+        var estabelecimento = await _estabelecimentoRepository.BuscarPorIdAsync(id);
+
+        if (estabelecimento == null)
+            return null;
+
+        return new EstabelecimentoResponseDto
+        {
+            Id = estabelecimento.Id,
+            Nome = estabelecimento.Nome,
+            Descricao = estabelecimento.Descricao,
+            Categoria = estabelecimento.Categoria,
+            Latitude = estabelecimento.Localizacao.Y,
+            Longitude = estabelecimento.Localizacao.X
+        };
+    }
+
+    public async Task<GeoJsonFeatureCollectionDto> ListarGeoJsonAsync()
+    {
+        var estabelecimentos = await _estabelecimentoRepository.ListarTodosAsync();
+
+        var features = estabelecimentos.Select(e => new GeoJsonFeatureDto
+        {
+            Type = "Feature",
+            Geometry = new GeoJsonGeometryDto
+            {
+                Type = "Point",
+                Coordinates = new[] { e.Localizacao.X, e.Localizacao.Y }
+            },
+            Properties = new Dictionary<string, object>
+            {
+                { "id", e.Id },
+                { "nome", e.Nome },
+                { "categoria", e.Categoria },
+                { "descricao", e.Descricao }
+            }
+        }).ToList();
+
+        return new GeoJsonFeatureCollectionDto
+        {
+            Type = "FeatureCollection",
+            Features = features
+        };
+    }
 }

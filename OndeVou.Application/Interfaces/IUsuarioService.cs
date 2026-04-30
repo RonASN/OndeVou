@@ -7,4 +7,6 @@ public interface IUsuarioService
 {
     Task<UsuarioResponseDto> CriarAsync(CriarUsuarioRequestDto request);
     Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
+    Task<List<UsuarioResponseDto>> ListarAsync(PaginacaoRequestDto paginacao);
+    Task<UsuarioResponseDto?> ObterPorIdAsync(int id);
 }

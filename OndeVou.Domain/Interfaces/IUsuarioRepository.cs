@@ -7,4 +7,5 @@ public interface IUsuarioRepository
     Task<Usuario> CriarAsync(Usuario usuario);
     Task<Usuario?> BuscarPorEmailAsync(string email);
     Task<Usuario?> BuscarPorIdAsync(int id);
+    Task<List<Usuario>> ListarAsync(int skip, int take);
 }
