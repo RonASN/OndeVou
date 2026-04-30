@@ -125,4 +125,19 @@ public class EstabelecimentoService : IEstabelecimentoService
             Features = features
         };
     }
+
+    public async Task<List<EstabelecimentoResponseDto>> ListarPorUsuarioIdAsync(int usuarioId)
+    {
+        var estabelecimentos = await _estabelecimentoRepository.ListarPorUsuarioIdAsync(usuarioId);
+
+        return estabelecimentos.Select(e => new EstabelecimentoResponseDto
+        {
+            Id = e.Id,
+            Nome = e.Nome,
+            Descricao = e.Descricao,
+            Categoria = e.Categoria,
+            Latitude = e.Localizacao.Y,
+            Longitude = e.Localizacao.X
+        }).ToList();
+    }
 }

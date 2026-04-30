@@ -93,4 +93,19 @@ public class EstabelecimentoController : ControllerBase
             return BadRequest(new { mensagem = ex.Message });
         }
     }
+
+    [HttpGet("usuario/{usuarioId}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ListarPorUsuarioId(int usuarioId)
+    {
+        try
+        {
+            var resultado = await _estabelecimentoService.ListarPorUsuarioIdAsync(usuarioId);
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
 }

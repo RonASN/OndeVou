@@ -56,4 +56,13 @@ public class EstabelecimentoRepository : IEstabelecimentoRepository
             .OrderBy(e => e.Nome)
             .ToListAsync();
     }
+
+    public async Task<List<Estabelecimento>> ListarPorUsuarioIdAsync(int usuarioId)
+    {
+        return await _context.Estabelecimentos
+            .AsNoTracking()
+            .Where(e => e.UsuarioId == usuarioId)
+            .OrderBy(e => e.Nome)
+            .ToListAsync();
+    }
 }

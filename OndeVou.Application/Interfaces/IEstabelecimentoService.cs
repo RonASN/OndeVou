@@ -9,4 +9,5 @@ public interface IEstabelecimentoService
     Task<List<EstabelecimentoResponseDto>> ListarAsync(EstabelecimentoFiltroRequestDto filtro);
     Task<EstabelecimentoResponseDto?> ObterPorIdAsync(int id);
     Task<GeoJsonFeatureCollectionDto> ListarGeoJsonAsync();
+    Task<List<EstabelecimentoResponseDto>> ListarPorUsuarioIdAsync(int usuarioId);
 }

@@ -8,4 +8,5 @@ public interface IEstabelecimentoRepository
     Task<List<Estabelecimento>> ListarAsync(string? nome, string? categoria, int skip, int take);
     Task<Estabelecimento?> BuscarPorIdAsync(int id);
     Task<List<Estabelecimento>> ListarTodosAsync();
+    Task<List<Estabelecimento>> ListarPorUsuarioIdAsync(int usuarioId);
 }
