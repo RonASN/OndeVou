@@ -10,7 +10,5 @@ public class Usuario
     public string SenhaHash { get; set; } = string.Empty;
     public TipoUsuario TipoUsuario { get; set; }
     public DateTime DataCriacao { get; set; }
-
-    // Navegação: Estabelecimentos que este usuário possui
     public ICollection<Estabelecimento> Estabelecimentos { get; set; } = new List<Estabelecimento>();
 }
