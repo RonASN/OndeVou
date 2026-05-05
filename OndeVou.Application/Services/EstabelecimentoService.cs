@@ -24,14 +24,12 @@ public class EstabelecimentoService : IEstabelecimentoService
 
     public async Task<EstabelecimentoResponseDto> CriarAsync(CriarEstabelecimentoRequestDto request, int usuarioId)
     {
-        // Buscar usuário
         var usuario = await _usuarioRepository.BuscarPorIdAsync(usuarioId);
         if (usuario == null)
         {
             throw new BusinessException("Usuário não encontrado");
         }
 
-        // Validar se o usuário é do tipo Empresa
         if (usuario.TipoUsuario != TipoUsuario.Empresa)
         {
             throw new BusinessException("Apenas usuários do tipo Empresa podem cadastrar estabelecimentos");

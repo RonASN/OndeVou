@@ -26,7 +26,6 @@ public class UsuarioService : IUsuarioService
 
     public async Task<UsuarioResponseDto> CriarAsync(CriarUsuarioRequestDto request)
     {
-        // Normalizar email
         var emailNormalizado = request.Email.Trim().ToLower();
 
         var usuarioExistente = await _usuarioRepository.BuscarPorEmailAsync(emailNormalizado);
@@ -35,7 +34,6 @@ public class UsuarioService : IUsuarioService
             throw new InvalidOperationException("Email já cadastrado");
         }
 
-        // Validar TipoUsuario
         if (!Enum.IsDefined(typeof(TipoUsuario), request.TipoUsuario))
         {
             throw new ArgumentException("Tipo de usuário inválido");
@@ -65,7 +63,6 @@ public class UsuarioService : IUsuarioService
 
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
     {
-        // Normalizar email
         var emailNormalizado = request.Email.Trim().ToLower();
 
         var usuario = await _usuarioRepository.BuscarPorEmailAsync(emailNormalizado);

@@ -24,7 +24,6 @@ public class EstabelecimentoController : ControllerBase
     {
         try
         {
-            // Obter ID do usuário autenticado
             var usuarioId = ClaimsHelper.GetUsuarioId(User);
 
             if (!usuarioId.HasValue)
