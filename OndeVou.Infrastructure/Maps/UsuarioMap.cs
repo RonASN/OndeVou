@@ -38,5 +38,17 @@ public class UsuarioMap : IEntityTypeConfiguration<Usuario>
             .WithOne(e => e.Usuario)
             .HasForeignKey(e => e.UsuarioId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Relacionamento: Um usuário pode ter vários favoritos
+        entity.HasMany(u => u.Favoritos)
+            .WithOne(f => f.Usuario)
+            .HasForeignKey(f => f.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relacionamento: Um usuário pode ter várias avaliações
+        entity.HasMany(u => u.Avaliacoes)
+            .WithOne(a => a.Usuario)
+            .HasForeignKey(a => a.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

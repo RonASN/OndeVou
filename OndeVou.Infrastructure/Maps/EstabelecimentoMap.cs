@@ -27,13 +27,21 @@ public class EstabelecimentoMap : IEntityTypeConfiguration<Estabelecimento>
             .IsRequired()
             .HasColumnType("geometry (Point, 4326)");
 
+        entity.Property(e => e.DataCriacao)
+            .IsRequired();
+
         entity.Property(e => e.UsuarioId)
             .IsRequired();
 
-        // Relacionamento já configurado no UsuarioMap, mas reforçando aqui
         entity.HasOne(e => e.Usuario)
             .WithMany(u => u.Estabelecimentos)
             .HasForeignKey(e => e.UsuarioId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        entity.HasIndex(e => e.Nome);
+        entity.HasIndex(e => e.Categoria);
+        entity.HasIndex(e => e.DataCriacao);
+        entity.HasIndex(e => e.Localizacao)
+            .HasMethod("GIST");
     }
 }

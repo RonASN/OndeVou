@@ -11,4 +11,6 @@ public class Usuario
     public TipoUsuario TipoUsuario { get; set; }
     public DateTime DataCriacao { get; set; }
     public ICollection<Estabelecimento> Estabelecimentos { get; set; } = new List<Estabelecimento>();
+    public ICollection<Favorito> Favoritos { get; set; } = new List<Favorito>();
+    public ICollection<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
 }

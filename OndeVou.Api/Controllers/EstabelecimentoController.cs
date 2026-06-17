@@ -59,6 +59,40 @@ public class EstabelecimentoController : ControllerBase
         }
     }
 
+    [HttpGet("feed")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Feed([FromQuery] EstabelecimentoFeedFiltroRequestDto filtro)
+    {
+        try
+        {
+            var resultado = await _estabelecimentoService.ListarFeedAsync(filtro);
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
+
+    [HttpGet("proximos")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Proximos([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double raioKm)
+    {
+        try
+        {
+            var resultado = await _estabelecimentoService.ListarProximosAsync(latitude, longitude, raioKm);
+            return Ok(resultado);
+        }
+        catch (BusinessException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
+
     [HttpGet("{id}")]
     [AllowAnonymous]
     public async Task<IActionResult> ObterPorId(int id)
@@ -78,13 +112,35 @@ public class EstabelecimentoController : ControllerBase
         }
     }
 
-    [HttpGet("geo")]
+    [HttpGet("{id}/detalhes")]
     [AllowAnonymous]
-    public async Task<IActionResult> ListarGeoJson()
+    public async Task<IActionResult> ObterDetalhes(int id)
     {
         try
         {
-            var resultado = await _estabelecimentoService.ListarGeoJsonAsync();
+            var usuarioId = ClaimsHelper.GetUsuarioId(User);
+            var resultado = await _estabelecimentoService.ObterDetalhesAsync(id, usuarioId);
+
+            if (resultado == null)
+            {
+                return NotFound(new { mensagem = "Estabelecimento não encontrado" });
+            }
+
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
+
+    [HttpGet("geo")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ListarGeoJson([FromQuery] string? nome, [FromQuery] string? categoria)
+    {
+        try
+        {
+            var resultado = await _estabelecimentoService.ListarGeoJsonAsync(nome, categoria);
             return Ok(resultado);
         }
         catch (Exception ex)

@@ -12,6 +12,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Estabelecimento> Estabelecimentos { get; set; }
+    public DbSet<Favorito> Favoritos { get; set; }
+    public DbSet<Avaliacao> Avaliacoes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
