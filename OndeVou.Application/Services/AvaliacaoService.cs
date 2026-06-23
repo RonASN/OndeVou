@@ -77,6 +77,22 @@ public class AvaliacaoService : IAvaliacaoService
         }).ToList();
     }
 
+    public async Task<List<MinhasAvaliacoesResponseDto>> ListarMinhasAsync(int usuarioId)
+    {
+        var avaliacoes = await _avaliacaoRepository.ListarPorUsuarioIdAsync(usuarioId);
+
+        return avaliacoes.Select(a => new MinhasAvaliacoesResponseDto
+        {
+            Id = a.Id,
+            EstabelecimentoId = a.EstabelecimentoId,
+            EstabelecimentoNome = a.Estabelecimento.Nome,
+            Categoria = a.Estabelecimento.Categoria,
+            Nota = a.Nota,
+            Comentario = a.Comentario,
+            DataCriacao = a.DataCriacao
+        }).ToList();
+    }
+
     public async Task<ResumoAvaliacaoResponseDto> ObterResumoPorEstabelecimentoIdAsync(int estabelecimentoId)
     {
         var (media, quantidade) = await _avaliacaoRepository.ObterResumoPorEstabelecimentoIdAsync(estabelecimentoId);

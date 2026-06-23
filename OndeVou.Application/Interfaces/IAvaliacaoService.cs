@@ -7,5 +7,6 @@ public interface IAvaliacaoService
 {
     Task<AvaliacaoResponseDto> CriarAsync(CriarAvaliacaoRequestDto request, int usuarioId);
     Task<List<AvaliacaoResponseDto>> ListarPorEstabelecimentoIdAsync(int estabelecimentoId);
+    Task<List<MinhasAvaliacoesResponseDto>> ListarMinhasAsync(int usuarioId);
     Task<ResumoAvaliacaoResponseDto> ObterResumoPorEstabelecimentoIdAsync(int estabelecimentoId);
 }

@@ -38,6 +38,16 @@ public class AvaliacaoRepository : IAvaliacaoRepository
             .ToListAsync();
     }
 
+    public async Task<List<Avaliacao>> ListarPorUsuarioIdAsync(int usuarioId)
+    {
+        return await _context.Avaliacoes
+            .AsNoTracking()
+            .Include(a => a.Estabelecimento)
+            .Where(a => a.UsuarioId == usuarioId)
+            .OrderByDescending(a => a.DataCriacao)
+            .ToListAsync();
+    }
+
     public async Task<(double Media, int Quantidade)> ObterResumoPorEstabelecimentoIdAsync(int estabelecimentoId)
     {
         var query = _context.Avaliacoes

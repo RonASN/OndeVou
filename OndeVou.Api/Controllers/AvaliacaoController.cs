@@ -43,6 +43,27 @@ public class AvaliacaoController : ControllerBase
         }
     }
 
+    [HttpGet("minhas")]
+    [Authorize]
+    public async Task<IActionResult> ListarMinhas()
+    {
+        try
+        {
+            var usuarioId = ClaimsHelper.GetUsuarioId(User);
+            if (!usuarioId.HasValue)
+            {
+                return Unauthorized(new { mensagem = "Usuário não autenticado" });
+            }
+
+            var resultado = await _avaliacaoService.ListarMinhasAsync(usuarioId.Value);
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensagem = "Erro interno do servidor", detalhes = ex.Message });
+        }
+    }
+
     [HttpGet("estabelecimento/{id}")]
     [AllowAnonymous]
     public async Task<IActionResult> ListarPorEstabelecimento(int id)
